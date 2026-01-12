@@ -1,0 +1,118 @@
+\section{Project Timeline and Gantt Chart}
+
+This section presents a detailed timeline for the entire project, spanning Phase 1 (Project Planning) through Phase 3 (ML Model Development and Final Presentation). The timeline accommodates computational demands of training runs, ensures adequate time for data collection, and allows thorough ML model development and evaluation.
+
+\subsection{Detailed Timeline}
+
+Table~\ref{tab:timeline} provides a week-by-week breakdown of major activities and milestones.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{|c|l|p{6cm}|c|}
+\hline
+\textbf{Week} & \textbf{Phase} & \textbf{Activities} & \textbf{Milestone} \\
+\hline
+3 & Phase 2 & Script development, YAML configs, baseline experiments & -- \\
+4 & Phase 2 & Baseline experiments, automation testing & -- \\
+5 & Phase 2 & Full data collection begins, proof-of-concept prep & \textbf{Oct 24: PoC} \\
+6 & Phase 2 & Tier 1 \& 2 experiments across algorithms (20 runs) & -- \\
+7 & Phase 2 & Tier 2 experiments, POCA multi-agent (15 runs) & -- \\
+8 & Phase 2 & Tier 3 complex environments, data integration & -- \\
+9 & Phase 2 & Tier 3 completion, EDA, preliminary ML models & -- \\
+10 & Phase 2 & Finalize data collection, midway evaluation & \textbf{Midway Eval} \\
+\hline
+11 & Phase 3 & RQ1 model development (training duration) & -- \\
+12 & Phase 3 & RQ2 model development (performance) & -- \\
+13 & Phase 3 & RQ3 model development (RAM usage) & -- \\
+14 & Phase 3 & Model refinement, ensemble methods, comparison & -- \\
+15 & Phase 3 & Model interpretation, insights extraction & -- \\
+16 & Phase 3 & Documentation, reproducibility verification & -- \\
+17 & Phase 3 & Report writing and revision & \textbf{Final Report} \\
+18 & Phase 3 & Presentation preparation and delivery & \textbf{Final Present.} \\
+\hline
+\end{tabular}
+\caption{Week-by-week project timeline with key milestones}
+\label{tab:timeline}
+\end{table}
+
+\subsection{Buffer Time and Risk Management}
+
+The timeline incorporates several buffer mechanisms:
+
+\textbf{Parallel execution:} Multiple team members run experiments simultaneously across different environments and algorithms, reducing calendar time despite high computational requirements.
+
+\textbf{Flexible experiment prioritization:} Our tiered experimental matrix (Section 4) allows us to deprioritize lower-priority experiments if time constraints emerge while ensuring high-priority experiments are completed.
+
+\textbf{Phased ML development:} Phase 3 begins ML model development early (Week 11) even while data collection continues (through Week 14), allowing iteration on models as the dataset grows.
+
+\textbf{Extended complex environment timeline:} Complex environment experiments (Walker, Crawler, Worm) are allocated extra time (Weeks 7--9) due to longer training duration (2--4 hours per run).
+
+\textbf{Report writing overlap:} Report writing begins in Week 16 while final experiments and documentation continue, ensuring adequate time for writing, revision, and polishing.
+
+\newpage
+\subsection{Gantt Chart}
+
+\begin{figure}[H]
+
+\begin{ganttchart}[
+    hgrid,
+    vgrid,
+    x unit=0.65cm,
+    y unit title=0.6cm,
+    y unit chart=0.5cm,
+    title height=1,
+    bar height=0.6,
+    group height=0.6,
+    bar label font=\small,
+    group label font=\small\bfseries,
+    title label font=\small,
+    milestone label font=\small\itshape,
+    group/.append style={fill=blue!20},
+    bar/.append style={fill=green!30},
+    milestone/.append style={fill=red, shape=diamond}
+]{1}{18}
+    
+    % Title
+    \gantttitle{Project Timeline (Weeks)}{18} \\
+    \gantttitle{Phase 2}{8}
+    \gantttitle{Phase 3}{8} \\
+    
+    % Phase 2
+    \ganttgroup{Phase 2: Data Collection}{3}{10} \\
+    \ganttbar{Script Development}{3}{4} \\
+    \ganttbar{YAML Configuration}{3}{4} \\
+    \ganttbar{Baseline Experiments}{4}{5} \\
+    \ganttmilestone{Proof-of-Concept}{5} \\
+    \ganttbar{Tier 1 \& 2 Experiments (PPO/SAC)}{5}{7} \\
+    \ganttbar{Multi-Agent Experiments (POCA)}{6}{7} \\
+    \ganttbar{Tier 3 Complex Environments}{7}{9} \\
+    \ganttbar{All Algorithms Cross-Testing}{5}{8} \\
+    \ganttbar{Data Integration}{8}{9} \\
+    \ganttbar{Exploratory Analysis}{8}{9} \\
+    \ganttbar{Preliminary ML Models}{9}{10} \\
+    \ganttbar{Presentation Prep}{9}{10} \\
+    \ganttmilestone{Midway Evaluation}{10} \\
+    
+    % Phase 3
+    \ganttgroup{Phase 3: ML Development}{11}{18} \\
+    \ganttbar{Continued Data Collection}{11}{14} \\
+    \ganttbar{RQ1: Duration Models}{11}{14} \\
+    \ganttbar{RQ2: Performance Models}{11}{14} \\
+    \ganttbar{RQ3: RAM Models}{12}{14} \\
+    \ganttbar{Model Comparison}{14}{15} \\
+    \ganttbar{Interpretation \& Insights}{14}{15} \\
+    \ganttbar{Code Documentation}{15}{16} \\
+    \ganttbar{GitHub Finalization}{16}{17} \\
+    \ganttbar{Report Writing}{16}{17} \\
+    \ganttbar{Report Revision}{17}{17} \\
+    \ganttbar{Presentation Prep}{17}{18} \\
+    \ganttmilestone{Final Report Due}{17} \\
+    \ganttmilestone{Final Presentation}{18}
+    
+\end{ganttchart}
+
+\label{fig:gantt}
+\end{figure}
+
+\newpage

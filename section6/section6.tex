@@ -1,0 +1,154 @@
+\section{Task Breakdown and Team Assignments}
+
+This section provides detailed task breakdowns for Phase 2 (Data Collection) and Phase 3 (ML Model Development), with specific assignments to each team member. 
+\newpage
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{section6/16-ProjectPlan2.pdf.png}
+
+    \label{fig:placeholder}
+\end{figure}
+\subsection{Phase 2: Data Collection and Initial Exploration}
+
+Phase 2 spans approximately 8 weeks (Weeks 3--10), with primary focus on collecting training data and building automation infrastructure.
+
+\textbf{Task 2.1: Development of data collection scripts}
+\begin{itemize}
+    \item \textbf{Assigned to:} Amirali (primary), Max (support)
+    \item \textbf Develop Python automation scripts for launching experiments that work for all experiments(PPO,SAC,POCA,Imitation)
+    \item \textbf Develop a script that wraps psutil style sampling and writes periodic CSV of CPU/GPU/RAM/disk usage and process stats.
+    \item \textbf Develop a scrpit that parses ML-Agents logs into standardized CSV rows (episode reward, steps, wall time, env, algorithm, hyperparams).
+    \item \textbf{Deliverable:} Three working scripts and Example results
+    \item \textbf{Deadline:} End of Week 4
+\end{itemize}
+
+\textbf{Task 2.2: YAML Configuration }
+\begin{itemize}
+    \item \textbf{Assigned to:} Anatolie (primary),Max(primary) Greg (support)
+    \item \textbf{Description:} Create/modify YAML files for simple and medium complexity environments.
+    \item \textbf{Description:} Create/modify YAML files for complex environments (Pyramids, Walker, Crawler, Worm) and multi-agent environments requiring POCA
+    \item \textbf{Deliverable:} 50-70 YAML configuration files
+    \item \textbf{Deadline:} End of Week 4-5
+\end{itemize}
+
+
+
+\textbf{Task 2.3: Tier 1 Baseline and Proof-of-Concept Runs}
+\begin{itemize}
+    \item \textbf{Assigned to:} Greg (primary) , Max (support)
+    \item \textbf Run baseline experiments for all simple environments using default configurations with PPO and SAC to establish reference performance
+    \item \textbf Compile 8-12 runs and log the results in Csv with a complete schema
+    \item \textbf{Deliverable:} Baseline runs + PoC CSV with schema + README for Project Week submission
+    \item \textbf{Deadline:} End of Week 5
+\end{itemize}
+
+
+\textbf{Task 2.4: Tier 1 Complete - Simple Environments}
+\begin{itemize}
+    \item \textbf{Assigned to:} everyone
+    \item \textbf Tier 1 runs (PPOS and SAC variations) - Greg
+    \item \textbf Tier 2 runs (PushBlock, Reacher, Bouncer) — Amirali
+    \item \textbf Tier 2 runs (Hallway,Visual Hallway) runs - Anatolie
+    \item \textbf Tier 2 runs POCA multi-agent  - Max
+    \item \textbf{Deliverable:} Master CSV with Tier 1 and 2 runs(schema)
+    \item \textbf{Deadline:} End of Week 7
+\end{itemize}
+
+
+
+
+\textbf{Task 2.5: Complex Environment}
+\begin{itemize}
+    \item \textbf{Assigned to:} Amirali,Anatolie,Max
+    \item \textbf{Description:} Execute Tier 3 experiments to prioritize a small number of well chosen variations
+    \item \textbf Pyramid runs - Amirali
+    \item \textbf Walker and Crawler runs - Anatolie
+    \item \textbf POCA and Extra runs - Max
+    \item \textbf{Deliverable:} Master CSV with Tier 3 runs(schema)
+    \item \textbf{Deadline:} End of Week 9
+\end{itemize}
+
+\textbf{Task 2.6: Algorithm Cross-Testing \& Edge Cases}
+\begin{itemize}
+    \item \textbf{Assigned to:} Greg
+    \item \textbf{Description:} Test edge cases and unusual hyperparameter combinations (very high/low learning rates, very large/small networks). Test algorithms on non-standard environments (e.g., SAC on discrete action spaces if supported).
+    \item \textbf{Deliverable:} 10--12 completed runs focusing on dataset diversity
+    \item \textbf{Deadline:} End of Week 8
+\end{itemize}
+
+\textbf{Task 2.7: Exploratory Data Analysis}
+\begin{itemize}
+    \item \textbf{Assigned to:} Max (primary), Amirali (support), Greg(support)
+    \item \textbf Eda notebook(Jupyter) with distributions, correlations, and key visualizations.
+    \item \textbf Train baseline models using Linear Regression and Random Tree forests
+    \item \textbf{Deliverable:} Jupyter notebook, model scripts, and evaluation metrics.
+    \item \textbf{Deadline:} End of Week 9
+\end{itemize}
+
+\textbf{Task 2.8: Data Integration from Other Groups}
+\begin{itemize}
+    \item \textbf{Assigned to:} Anatolie (primary), Greg (support)
+    \item \textbf{Description:} Download and integrate data from other student groups, standardize column names, handle missing values, merge into extended dataset
+    \item \textbf{Deliverable:} Extended CSV combining our data with other groups' data, with documentation of sources
+    \item \textbf{Deadline:} End of Week 9
+\end{itemize}
+
+
+\newpage
+\subsection{Phase 3: Machine Learning Model Development}
+
+Phase 3 spans approximately 8 weeks (Weeks 11--18), with primary focus shifting to ML model development while continuing lightweight data collection.
+
+
+\textbf{Task 3.1: Opportunistic and Imitation Data Expansion}
+\begin{itemize}
+    \item \textbf{Assigned to:} Greg (primary), Max (support)
+    \item \textbf Continue Expanding the data set opportunistically, focusing on optional Imitation Learning runs if Tier 1 to 3 milestones are complete. Run extra experiments overnight/weekends to fill in matrix gaps or promising variations.
+    \item \textbf{Deliverable:} 5-8 Imitation Learning runs, 10-20 additional opportunistic runs
+    \item \textbf{Deadline:} End of Week 14 (flexible)
+\end{itemize}
+
+
+\textbf{Task 3.2:Predictive Model Development (RQ1-RQ3)}
+\begin{itemize}
+    \item \textbf{Assigned to:} Greg (Rq1-training), Amirali (RQ2-performance), Anatolie (Rq3 Resource usage) , Max (support)
+    \item \textbf{Description:} Develop and evaluate ML models for each research question using Linear Regression, Random Forest, Gradient Boosting, and Neural Networks. Include feature engineering, cross-validation, and algorithm-type comparisons.
+    \item \textbf{Deliverable:} Trained models + evaluation metrics
+    \item \textbf{Deadline:} End of Week 14
+\end{itemize}
+
+
+\textbf{Task 3.3: Algorithm-Specific Model Analysis}
+\begin{itemize}
+    \item \textbf{Assigned to:} Max(primary) , Amirali (support)
+    \item \textbf{Description:} Compare unified vs specific models, test ensemble approaches and analyze interpretability using SHAP/feature importance ,identify which hyperparameters most influence training time, performance, and resource use.
+    \item \textbf{Deliverable:} Comparative model analysis document , ensemble evaluation report , interpretability visualizations + practical recommendations
+    \item \textbf{Deadline:} End of Week 15-16
+\end{itemize}
+
+
+\textbf{Task 3.4: Code Documentation and Reproducibility}
+\begin{itemize}
+    \item \textbf{Assigned to:} Anatolie , Greg
+    \item \textbf{Description:} Finalize and document all code: add docstrings, type hints, and README files per directory. Verify experiments can be fully reproduced from YAML configs. Polish the GitHub repo with overview, data organization, LICENSE, and CONTRIBUTING files.
+    \item \textbf{Deliverable:} Fully documented codebase , Portofolio-ready 
+    github repository
+    \item \textbf{Deadline:} End of Week 16-17
+\end{itemize}
+
+
+\textbf{Task 3.5: Written Report Drafting}
+\begin{itemize}
+    \item \textbf{Assigned to:} All team members
+    \begin{itemize}
+        \item Greg: Introduction, Research Questions (sections 1--2)
+        \item Amirali: Experiment Design, Algorithm Comparison (sections 3--4)
+        \item Anatolie: Data Collection, ML Methods (sections 5--6)
+        \item Max: Results, Algorithm Analysis, Discussion, Conclusion (sections 7--9)
+    \end{itemize}
+    \item \textbf{Description:} Write and compile a 10-page report summarizing methods, datasets, model results, and algorithm insights. Include figures, tables, and practical takeaways for RL research. Prepare final presentation slides if required.
+    
+    \item \textbf{Deliverable:} Complete draft report
+    \item \textbf{Deadline:} End of Week 17(report)
+\end{itemize}
+
