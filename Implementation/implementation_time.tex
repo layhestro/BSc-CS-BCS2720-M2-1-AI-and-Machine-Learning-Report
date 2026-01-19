@@ -38,7 +38,7 @@ To prevent data leakage, features that could only be known after training comple
     \item Training metadata: \texttt{total\_steps\_actual}, \texttt{timestamp}
 \end{itemize}
 
-The final feature set contains 18 predictors including categorical features (\texttt{environment}, \texttt{algorithm}, \texttt{os}, \texttt{gpu\_name}) and numeric features (hyperparameters and hardware specifications).
+The final feature set contains 24 predictors including categorical features (\texttt{environment}, \texttt{algorithm}, \texttt{os}, \texttt{gpu\_name}) and numeric features (hyperparameters and hardware specifications).
 
 \paragraph{Stage 3: Target Transformation}
 Training durations range from 364 seconds (6 minutes) to 70,560 seconds (19.6 hours), spanning approximately 200-fold variation. To stabilize variance and improve model performance, we apply log transformation:
@@ -50,11 +50,11 @@ y_{transformed} = \log(1 + y_{seconds})
 The $\log(1 + x)$ formulation handles zero values gracefully while compressing the range of duration values.
 
 \paragraph{Stage 4: Preprocessing Pipeline}
-Categorical variables are encoded using LabelEncoder, converting environment names and algorithm types to integer representations. This encoding is appropriate for tree-based models that can learn non-linear relationships between categories. No standardization is applied to numeric features, as tree-based models are scale-invariant.
+Categorical variables are encoded using OrdinalEncoder, converting environment names and algorithm types to integer representations. This encoding is appropriate for tree-based models that can learn non-linear relationships between categories. No standardization is applied to numeric features, as tree-based models are scale-invariant.
 
 \subsubsection{Cross-Validation Strategy}
 
-To ensure robust performance estimates, we implement stratified 5-fold cross-validation. The stratification strategy divides training durations into quartiles, ensuring each fold contains a balanced mix of short, medium, and long training runs. This prevents individual folds from being dominated by a single duration range.
+To ensure robust performance estimates, we implement stratified 5-fold cross-validation. The stratification strategy divides training durations into quintiles, ensuring each fold contains a balanced mix of short, medium, and long training runs. This prevents individual folds from being dominated by a single duration range.
 
 The cross-validation process:
 \begin{enumerate}

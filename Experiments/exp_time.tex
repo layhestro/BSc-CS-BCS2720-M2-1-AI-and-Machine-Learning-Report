@@ -1,17 +1,14 @@
 \subsection{Research Question 1: Experimental Setup}
 
 \subsubsection{Dataset Characteristics}
-
 After data cleaning and preparation, the duration prediction dataset contains:
-
 \begin{itemize}
     \item \textbf{Total Samples}: 5,673 valid training runs
-    \item \textbf{Features}: 18 predictors (4 categorical, 14 numeric)
+    \item \textbf{Features}: 24 predictors (2 categorical, 22 numeric)
     \item \textbf{Duration Range}: 364 seconds (6 minutes) to 70,560 seconds (19.6 hours)
     \item \textbf{Environments}: 7 Unity ML-Agents environments with varying complexity
     \item \textbf{Algorithms}: 3 RL algorithms (PPO, SAC, POCA)
 \end{itemize}
-
 The wide duration range (nearly 200x difference between shortest and longest runs) motivated the log transformation approach to prevent models from being dominated by long-duration outliers.
 
 \subsubsection{Experimental Protocol}
@@ -48,15 +45,12 @@ We designed experiments to systematically evaluate model performance and identif
 \textbf{Method}: Generate residual plots (predicted vs actual) and error distributions for the champion model. Analyze whether errors are systematic (bias) or random (variance).
 
 \subsubsection{Reproducibility Measures}
-
 To ensure experiments can be replicated:
-
 \begin{itemize}
     \item Fixed random seed (42) for all stochastic operations
     \item Identical cross-validation splits across all models
-    \item Documented software versions (Python 3.10, scikit-learn 1.3+)
+    \item Documented software versions (Python 3, pandas 2.2.2, numpy 2.0.2, scikit-learn)
     \item Version-controlled code in Jupyter notebook format
     \item Persistent storage of trained models and intermediate results
 \end{itemize}
-
-All experiments were executed on Google Colab Pro with consistent computational resources (CPU-based training, no GPU required for tabular data).
+All experiments were executed on Google Colab with consistent computational resources (CPU-based training, no GPU required for tabular data).
