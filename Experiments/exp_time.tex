@@ -1,0 +1,62 @@
+\subsection{Research Question 1: Experimental Setup}
+
+\subsubsection{Dataset Characteristics}
+
+After data cleaning and preparation, the duration prediction dataset contains:
+
+\begin{itemize}
+    \item \textbf{Total Samples}: 5,673 valid training runs
+    \item \textbf{Features}: 18 predictors (4 categorical, 14 numeric)
+    \item \textbf{Duration Range}: 364 seconds (6 minutes) to 70,560 seconds (19.6 hours)
+    \item \textbf{Environments}: 7 Unity ML-Agents environments with varying complexity
+    \item \textbf{Algorithms}: 3 RL algorithms (PPO, SAC, POCA)
+\end{itemize}
+
+The wide duration range (nearly 200x difference between shortest and longest runs) motivated the log transformation approach to prevent models from being dominated by long-duration outliers.
+
+\subsubsection{Experimental Protocol}
+
+We designed experiments to systematically evaluate model performance and identify the best predictor for training duration:
+
+\paragraph{Experiment 1: Model Family Comparison}
+\textbf{Objective}: Determine which model family (linear, tree-based, distance-based) performs best for duration prediction.
+
+\textbf{Method}: Train and evaluate representative models from each family:
+\begin{itemize}
+    \item Linear: Linear Regression, Ridge
+    \item Tree-based: Random Forest, Extra Trees, Gradient Boosting, HistGradient Boosting
+    \item Distance-based: K-Nearest Neighbors
+\end{itemize}
+
+\textbf{Evaluation}: 5-fold stratified cross-validation with MAE (mean absolute error) and R² score as primary metrics.
+
+\paragraph{Experiment 2: Hyperparameter Sensitivity}
+\textbf{Objective}: Assess whether default hyperparameters are sufficient or if tuning provides substantial gains.
+
+\textbf{Method}: Compare default configurations against tuned versions for Ridge (alpha parameter), Random Forest (tree depth, leaf size), KNN (number of neighbors), and HistGradient Boosting (learning rate, max iterations).
+
+\textbf{Tuning Approach}: GridSearchCV with 3-fold inner cross-validation to select optimal hyperparameters without overfitting.
+
+\paragraph{Experiment 3: Feature Importance Analysis}
+\textbf{Objective}: Identify which configuration parameters most strongly influence training duration.
+
+\textbf{Method}: Extract feature importance scores from the best tree-based model (Gradient Boosting) based on reduction in node impurity. Rank features by importance and analyze the top predictors.
+
+\paragraph{Experiment 4: Prediction Error Analysis}
+\textbf{Objective}: Characterize model errors to understand failure modes and limitations.
+
+\textbf{Method}: Generate residual plots (predicted vs actual) and error distributions for the champion model. Analyze whether errors are systematic (bias) or random (variance).
+
+\subsubsection{Reproducibility Measures}
+
+To ensure experiments can be replicated:
+
+\begin{itemize}
+    \item Fixed random seed (42) for all stochastic operations
+    \item Identical cross-validation splits across all models
+    \item Documented software versions (Python 3.10, scikit-learn 1.3+)
+    \item Version-controlled code in Jupyter notebook format
+    \item Persistent storage of trained models and intermediate results
+\end{itemize}
+
+All experiments were executed on Google Colab Pro with consistent computational resources (CPU-based training, no GPU required for tabular data).

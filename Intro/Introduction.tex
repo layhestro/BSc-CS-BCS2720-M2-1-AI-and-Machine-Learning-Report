@@ -1,31 +1,27 @@
 \section{Introduction}
 
-Reinforcement Learning (RL) has achieved remarkable success in domains ranging from game playing \cite{mnih2015human, silver2016mastering} to robotics \cite{levine2016end} and autonomous systems \cite{kiran2021deep}. However, a significant barrier to RL research and deployment is the computational cost of training agents. A single training run can require hours to days of computation, consuming substantial energy and financial resources. This challenge is compounded by the trial-and-error nature of hyperparameter tuning, where researchers must run multiple expensive experiments to find optimal configurations.
+Reinforcement Learning (RL) has achieved remarkable success in domains ranging from game playing \cite{mnih2015human, silver2016mastering} to robotics \cite{levine2016end} and autonomous systems \cite{kiran2021deep}. However, a significant barrier to RL research is the computational cost of training agents. A single training run can require hours to days of computation, consuming substantial energy and financial resources. This challenge is made worse by the trial-and-error nature of hyperparameter tuning, where researchers must run multiple expensive experiments to find optimal configurations.
 
-Currently, estimating the training time and final performance of an RL agent requires either expensive pilot experiments or rough heuristics based on intuition and prior experience. Researchers often face difficult decisions: Should we allocate 24 hours of GPU time to this configuration? Will these hyperparameters lead to good performance? These questions typically cannot be answered without actually running the experiments, leading to wasted computational resources and slower research cycles.
+Currently, estimating the training time, final performance, and resource requirements of an RL agent requires either expensive pilot experiments or rough guesses based on experience. Researchers often face difficult decisions without running actual experiments: How long will this configuration take? Will these hyperparameters achieve good performance? Will this run exceed available memory? These uncertainties lead to wasted computational resources and slower research cycles.
 
 \subsection{The Meta-Learning Approach}
 
-We propose a meta-learning solution to this problem: using machine learning to predict properties of machine learning training runs. Rather than improving RL algorithms themselves, we treat RL training as a data-generating process and build predictive models that forecast training outcomes before execution. This represents a dual-layer approach where RL algorithms serve as data generators, and supervised learning models predict their behavior.
+We propose a meta-learning solution: using supervised machine learning to predict properties of RL training runs before execution. Rather than improving RL algorithms themselves, we treat RL training as a data-generating process and build predictive models that forecast training outcomes. This approach uses RL algorithms as data generators while supervised learning models predict their behavior.
 
-The key insight is that training outcomes are not random but are determined by systematic relationships between configuration parameters (learning rate, batch size, network architecture), environment characteristics, and hardware specifications. By collecting data from actual training runs and building regression models on this data, we can learn these relationships and make predictions for new, unseen configurations.
+The key idea is that training outcomes are not random but are determined by systematic relationships between configuration parameters (learning rate, batch size, network architecture), environment characteristics, and hardware specifications. By collecting data from actual training runs and building regression models, we can learn these relationships and make predictions for new configurations.
 
 \subsection{Contributions}
 
 This work makes the following contributions:
 
 \begin{itemize}
-    \item We formulate two critical prediction problems in RL training: (1) predicting wall-clock training duration and (2) predicting final agent performance, framing both as supervised learning tasks.
+    \item We formulate three critical prediction problems in RL training as supervised learning tasks: (1) wall-clock training duration, (2) final agent performance, and (3) peak RAM usage.
     
-    \item We develop a comprehensive data collection pipeline that extracts training metadata, hyperparameters, hardware specifications, and performance metrics from Unity ML-Agents training runs.
+    \item We develop a data collection pipeline that extracts training metadata, hyperparameters, hardware specifications, and performance metrics from Unity ML-Agents training runs.
     
-    \item We evaluate multiple regression models (Linear Regression, Ridge Regression, Random Forest, Gradient Boosting, KNN) for duration prediction, achieving R² scores up to 0.9501 with Gradient Boosting Regressor.
+    \item We evaluate multiple regression models (Linear Regression, Ridge Regression, Random Forest, Gradient Boosting, KNN) across all three research questions, achieving R² scores up to 0.9501 for duration prediction with Gradient Boosting Regressor.
     
-    \item We provide feature importance analysis identifying \texttt{max\_steps}, environment type, and neural network architecture as primary predictors of training duration.
-    
-    \item We demonstrate the practical feasibility of meta-learning for RL training prediction across diverse environments and configurations.
+    \item We provide feature importance analysis identifying key predictors for each research question, demonstrating the feasibility of meta-learning for RL training prediction across diverse environments and configurations.
 \end{itemize}
 
-The remainder of this paper is organized as follows: Section II presents our research questions and methodology, Section III describes our implementation including data collection and preprocessing, Section IV presents experimental results and analysis, Section V discusses related work, and Section VI concludes with future directions.
-
-% ============================================
+The remainder of this paper is organized as follows: Section 2 presents our research questions and methodology, Section 3 describes our implementation, Section 4 presents experimental results, Section 5 discusses findings and limitations, and Section 6 concludes with future directions.
