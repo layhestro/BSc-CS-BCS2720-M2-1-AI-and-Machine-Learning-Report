@@ -1,0 +1,27 @@
+\subsection{Research questions 2: Experiment Implementation}
+This section describes how we conducted the experiment for the second research question , which focuses on predicting the performance of an ML agent. The metric which we used to determine performance is final mean reward. In order to conduct the experiment we used a method divided in several stages and replicated it multiple times to see the results.
+
+First of all , we loaded the data from the master.csv file and preprocessed the data. In this stage we removed all the rows that contain empty cells of our target metric , as well as excluding the hyperparameters that could cause a data leakage. After preprocessing, we split the dataset into training and testing using KFold cross validation technique: 
+\begin{verbatim}
+kf = KFold(n_splits=10, shuffle=True, random_state=42)
+\end{verbatim}
+In the next stage, we applied different model predictors to diversify our results and draw conclusions about our data. The models and their parameters that we chose are the following:
+\begin{itemize}
+    \item \begin{verbatim}KNeighborsRegressor()
+    \end{verbatim}
+    \item \begin{verbatim}LinearRegression()
+    \end{verbatim}
+    \item \begin{verbatim} MLPRegressor(hidden_layer_sizes=(100,),activation='tanh',solver='adam',shuffle=True, 
+    
+random_state=42,max_iter=20000, momentum=0.7, early_stopping=True,validation_fraction=0.15)
+    \end{verbatim}
+    \item \begin{verbatim}RandomForestRegressor(n_estimators=100 , min_samples_leaf=4,min_samples_split=5)
+    \end{verbatim}
+    \item \begin{verbatim}ExtraTreesRegressor(n_estimators=100 , min_samples_leaf=4,min_samples_split=5,bootstrap=False)
+    \end{verbatim}
+    \item \begin{verbatim}HistGradientBoostingRegressor(learning_rate=0.1,min_samples_leaf=3,l2_regularization=0.1,
+random_state=42, max_bins=180,early_stopping=True)
+    \end{verbatim}
+\end{itemize}
+
+To see which models performed the best we used r2 score and mean absolute error , as we are predicting for a continious variable. The experiment was conducted for two separate algorithms: ppo and sac. PPO has much more data than SAC , which impacts the performance of the predictors(see Figure~\ref{fig:PPOResultsRQ2} and Figure~\ref{fig:SACResultsRQ2}).

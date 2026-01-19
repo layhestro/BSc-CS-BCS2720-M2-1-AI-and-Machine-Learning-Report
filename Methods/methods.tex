@@ -1,1 +1,69 @@
 \section{Method}
+
+This section formalizes our research questions and describes the machine learning approaches used to address them.
+
+\subsection{Research Question 1: Training Duration Prediction}
+
+\textbf{Problem Statement:} Can we predict wall-clock training duration based on configuration parameters and hardware specifications?
+
+\textbf{Motivation:} RL training is computationally expensive, with runs ranging from minutes to days. Accurate duration estimates enable effective resource scheduling and budget allocation. Currently, estimating training time requires expensive pilot experiments or rough heuristics—a predictive model would save significant time and energy costs in large-scale RL research.
+
+\textbf{Formalization:} We formulate this as a regression problem where:
+
+\textbf{Input Features ($X$):}
+\begin{itemize}
+    \item \texttt{environment}: Categorical (3DBall, GridWorld, Basic, PushBlock, Hallway, VisualHallway, Reacher, Bouncer, FoodCollector, Pyramids, Walker, Crawler, Worm, SoccerTwos, CooperativePushBlock)
+    \item \texttt{algorithm}: Categorical (PPO, SAC, POCA, Imitation Learning)
+    \item \texttt{learning\_rate}: Float ($10^{-4}$ to $10^{-3}$)
+    \item \texttt{batch\_size}: Integer (32, 64, 128, 256)
+    \item \texttt{hidden\_units}: Integer (64, 128, 256, 512)
+    \item \texttt{num\_layers}: Integer (1, 2, 3)
+    \item \texttt{max\_steps}: Integer (250,000 to 1,000,000)
+    \item \texttt{ram\_gb}: Float (total system RAM)
+    \item \texttt{cpu\_cores}: Integer (number of CPU cores)
+\end{itemize}
+
+\textbf{Target Variable ($y$):}
+\begin{itemize}
+    \item \texttt{training\_duration\_seconds}: Float (wall-clock time from training start to completion)
+\end{itemize}
+
+\textbf{ML Approach:} We evaluate multiple regression algorithms including Linear Regression (baseline), Ridge Regression with hyperparameter tuning, Random Forest, Gradient Boosting, and K-Nearest Neighbors (KNN). Model performance is assessed using 5-fold cross-validation with metrics including Mean Absolute Error (MAE) and R² score. To handle the wide range of duration values and improve model performance, we apply log transformation to the target variable: $y_{transformed} = \log(1 + y)$.
+
+\subsection{Research Question 2: Final Performance Prediction}
+
+\textbf{Problem Statement:} Can we predict final agent performance (mean cumulative reward) based on training configuration?
+
+\textbf{Motivation:} Hyperparameter optimization is critical in RL but requires running multiple expensive training runs. A model that estimates final performance without full training would significantly accelerate hyperparameter search, enabling quick identification of promising configurations and reducing computational overhead by orders of magnitude.
+
+\textbf{Formalization:} This is also a regression problem where:
+
+\textbf{Input Features ($X$):}
+\begin{itemize}
+    \item Environment and algorithm features (same as RQ1)
+    \item Hyperparameters: \texttt{learning\_rate}, \texttt{batch\_size}, \texttt{hidden\_units}, \texttt{num\_layers}, \texttt{max\_steps}
+    \item Training parameters: \texttt{time\_horizon} (steps before policy update), \texttt{buffer\_size} (experience replay buffer size)
+    \item PPO-specific: \texttt{beta}, \texttt{epsilon}, \texttt{lambd}, \texttt{num\_epoch}
+    \item SAC-specific: \texttt{tau}, \texttt{init\_entcoef}
+    \item Reward shaping: \texttt{gamma} (discount factor), \texttt{strength}
+\end{itemize}
+
+\textbf{Target Variable ($y$):}
+\begin{itemize}
+    \item \texttt{final\_mean\_reward}: Float (average cumulative reward over last 100 episodes)
+\end{itemize}
+
+\textbf{ML Approach:} We test Random Forest and Gradient Boosting (effective for non-linear hyperparameter relationships) and Neural Networks with regularization to prevent overfitting on limited data. The same cross-validation strategy is employed for robust evaluation.
+
+\subsection{Evaluation Metrics}
+
+We evaluate model performance using two primary metrics:
+
+\begin{itemize}
+    \item \textbf{Mean Absolute Error (MAE)}: Measures the average magnitude of prediction errors in the same units as the target variable. For duration prediction with log-transformation, MAE is reported in log-seconds.
+    
+    \item \textbf{R² Score (Coefficient of Determination)}: Measures the proportion of variance in the target variable explained by the model, ranging from 0 to 1, where 1 indicates perfect prediction.
+\end{itemize}
+
+Additionally, we analyze feature importance to identify which configuration parameters and hardware specifications have the strongest influence on training duration and final performance. This analysis provides actionable insights for researchers optimizing their RL experiments.
+
