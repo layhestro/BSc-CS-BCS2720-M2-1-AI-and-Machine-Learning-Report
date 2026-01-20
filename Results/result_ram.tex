@@ -1,26 +1,9 @@
 \subsection{RAM Usage Prediction Results (RQ3)}
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[scale=0.3]{Results/img/PPOResultsRQ3.png}
-        \caption{PPO Results for Peak RAM Usage Prediction (RQ3).}
-        \label{fig:PPOResultsRQ3}
-    \end{minipage}\hfill
-    \begin{minipage}{0.48\textwidth}
-        \centering
-        \includegraphics[scale=0.3]{Results/img/SACResultsRQ3.png}
-        \caption{SAC Results for Peak RAM Usage Prediction (RQ3).}
-        \label{fig:SACResultsRQ3}
-    \end{minipage}
-\end{figure}
-
 \label{sec:rq3_results}
 
 We evaluated six different regression models to predict peak RAM usage for both PPO and SAC algorithms. The performance of each model was measured using the Coefficient of Determination ($R^2$) and Mean Absolute Error (MAE). Table~\ref{tab:ram_results} summarizes these results.
 
-\begin{table}[h]
+\begin{table}[htbp]
     \centering
     \caption{Performance comparison of RAM usage predictors for PPO and SAC algorithms.}
     \label{tab:ram_results}
@@ -39,7 +22,7 @@ We evaluated six different regression models to predict peak RAM usage for both 
     \end{tabular}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \begin{minipage}{0.48\textwidth}
         \centering

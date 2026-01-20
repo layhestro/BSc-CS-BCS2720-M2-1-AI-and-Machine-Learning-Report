@@ -5,47 +5,45 @@ This section formalizes our research questions and describes the machine learnin
 \subsection{Research Question 1: Training Duration Prediction}
 
 \textbf{Problem Statement:} Can we predict wall-clock training duration based on configuration parameters and hardware specifications?
-
-\textbf{Motivation:} RL training is computationally expensive, with runs ranging from minutes to days. Accurate duration estimates would enable better resource scheduling and budget allocation. Currently, estimating training time requires expensive pilot experiments or rough guesses. A predictive model would save significant time and energy costs in large-scale RL research.
+\textbf{Motivation:} RL training is computationally expensive. Accurate duration estimates would enable better resource scheduling and budget allocation, saving time and energy.
 
 \textbf{Formalization:} We formulate this as a regression problem where:
 
 \textbf{Input Features ($X$):}
 \begin{itemize}
-    \item \texttt{environment}: Categorical (3DBall, GridWorld, Basic, PushBlock, Hallway, VisualHallway, Reacher, Bouncer, FoodCollector, Pyramids, Walker, Crawler, Worm, SoccerTwos, CooperativePushBlock)
+    \item \texttt{environment}: Categorical (15 Unity environments)
     \item \texttt{algorithm}: Categorical (PPO, SAC, POCA, Imitation Learning)
-    \item \texttt{learning\_rate}: Float ($10^{-4}$ to $10^{-3}$)
-    \item \texttt{batch\_size}: Integer (32, 64, 128, 256)
-    \item \texttt{hidden\_units}: Integer (64, 128, 256, 512)
-    \item \texttt{num\_layers}: Integer (1, 2, 3)
-    \item \texttt{max\_steps}: Integer (250,000 to 1,000,000)
+    \item \texttt{learning\_rate}: Float
+    \item \texttt{batch\_size}: Integer
+    \item \texttt{hidden\_units}: Integer
+    \item \texttt{num\_layers}: Integer
+    \item \texttt{max\_steps}: Integer
     \item \texttt{ram\_gb}: Float (total system RAM)
-    \item \texttt{cpu\_cores}: Integer (number of CPU cores)
+    \item \texttt{cpu\_cores}: Integer (number of available CPU cores)
 \end{itemize}
 
 \textbf{Target Variable ($y$):}
 \begin{itemize}
-    \item \texttt{training\_duration\_seconds}: Float (wall-clock time from training start to completion)
+    \item \texttt{training\_duration\_seconds}: Float (wall-clock time)
 \end{itemize}
 
-\textbf{ML Approach:} We evaluate multiple regression algorithms including Linear Regression (baseline), Ridge Regression with hyperparameter tuning, Random Forest, Gradient Boosting, and K-Nearest Neighbors (KNN). Model performance is assessed using 5-fold cross-validation with Mean Absolute Error (MAE) and R² score as evaluation metrics. To handle the wide range of duration values, we apply log transformation to the target variable: $y_{transformed} = \log(1 + y)$.
+\textbf{ML Approach:} We evaluate Linear Regression, Ridge Regression, Random Forest, Gradient Boosting, and KNN using 5-fold cross-validation with MAE and R² score. We apply log transformation to the target variable: $y_{transformed} = \log(1 + y)$.
 
 \subsection{Research Question 2: Final Performance Prediction}
 
 \textbf{Problem Statement:} Can we predict final agent performance (mean cumulative reward) based on training configuration?
+\textbf{Motivation:} Estimating performance without full training speeds up hyperparameter optimization.
 
-\textbf{Motivation:} Hyperparameter optimization is critical in RL but requires running multiple expensive training runs. A model that estimates final performance without full training would significantly speed up hyperparameter search, allowing quick identification of promising configurations and reducing computational overhead.
-
-\textbf{Formalization:} This is also a regression problem where:
+\textbf{Formalization:} This is a regression problem where:
 
 \textbf{Input Features ($X$):}
 \begin{itemize}
     \item Environment and algorithm features (same as RQ1)
     \item Core hyperparameters: \texttt{learning\_rate}, \texttt{batch\_size}, \texttt{hidden\_units}, \texttt{num\_layers}, \texttt{max\_steps}
-    \item Training parameters: \texttt{time\_horizon} (steps before policy update), \texttt{buffer\_size} (experience replay buffer size)
+    \item Training parameters: \texttt{time\_horizon}, \texttt{buffer\_size}
     \item PPO-specific: \texttt{beta}, \texttt{epsilon}, \texttt{lambd}, \texttt{num\_epoch}
     \item SAC-specific: \texttt{tau}, \texttt{init\_entcoef}
-    \item Reward shaping: \texttt{gamma} (discount factor), \texttt{strength}
+    \item Reward shaping: \texttt{gamma}, \texttt{strength}
 \end{itemize}
 
 \textbf{Target Variable ($y$):}
@@ -53,44 +51,38 @@ This section formalizes our research questions and describes the machine learnin
     \item \texttt{final\_mean\_reward}: Float (average cumulative reward over last 100 episodes)
 \end{itemize}
 
-\textbf{ML Approach:} We test Random Forest and Gradient Boosting (effective for non-linear hyperparameter relationships) and Neural Networks (MLPRegressor) with regularization to prevent overfitting. The same cross-validation strategy is used for robust evaluation.
+\textbf{ML Approach:} We test Random Forest, Gradient Boosting, and Neural Networks (MLPRegressor) with regularization using cross-validation.
 
 \subsection{Research Question 3: RAM Usage Prediction}\label{methodsrq3}
 
 \textbf{Problem Statement:} Can we predict peak RAM usage during training based on environment configuration and hyperparameters?
-
-\textbf{Motivation:} Memory constraints are a common bottleneck in RL research. Out-of-memory errors can cause training failures after hours of computation, wasting significant resources. Predictive RAM models would allow researchers to determine if their hardware is sufficient before starting training and guide decisions about environment design and parallelization strategies.
+\textbf{Motivation:} Predictive RAM models help prevent out-of-memory errors and guide resource allocation.
 
 \textbf{Formalization:} This is a regression problem where:
 
 \textbf{Input Features ($X$):}
 \begin{itemize}
-    \item \texttt{environment}: Categorical (15 environments as listed above)
+    \item \texttt{environment}: Categorical
     \item \texttt{algorithm}: Categorical (PPO, SAC)
-    \item \texttt{batch\_size}: Integer (larger batches typically require more memory)
-    \item \texttt{buffer\_size}: Integer (experience replay buffer size)
-    \item \texttt{hidden\_units}: Integer (larger networks require more memory)
-    \item \texttt{num\_layers}: Integer (deeper networks require more memory)
-    \item \texttt{ram\_gb}: Float (maximum RAM of a device to have the limit of a memory)
-    \item \texttt{cpu\_cores} Integer (with more core the device may use more CPU which results in more RAM usage)
+    \item \texttt{batch\_size}: Integer
+    \item \texttt{buffer\_size}: Integer
+    \item \texttt{hidden\_units}: Integer
+    \item \texttt{num\_layers}: Integer
+    \item \texttt{ram\_gb}: Float (total available system RAM)
+    \item \texttt{cpu\_cores}: Integer (number of available CPU cores)
 \end{itemize}
 
 \textbf{Target Variable ($y$):}
 \begin{itemize}
-    \item \texttt{peak\_ram\_mb}: Float (maximum RAM usage in megabytes during training)
+    \item \texttt{peak\_ram\_mb}: Float (maximum RAM usage in MB)
 \end{itemize}
 
-\textbf{ML Approach:} Memory usage may exhibit more linear relationships as it often scales predictably with certain parameters (buffer size, network size). We start with Linear Regression (LR) as baseline and compare with Random Forest Regressor(RFR), Extra Trees Regressor(ETR), and KNN. We also test HistGradient Boosting Regressor(HGBR) and MLPRegressor or Artificial Neural Network(ANN) for potential non-linear effects.
+\textbf{ML Approach:} We compare Linear Regression, Random Forest, Extra Trees, KNN, HistGradient Boosting, and MLPRegressor.
 
 \subsection{Evaluation Metrics}
-
-We evaluate model performance using two primary metrics:
-
+We evaluate model performance using:
 \begin{itemize}
-    \item \textbf{Mean Absolute Error (MAE)}: Measures the average magnitude of prediction errors in the same units as the target variable. For duration prediction with log-transformation, MAE is reported in log-seconds.
-    
-    \item \textbf{R² Score (Coefficient of Determination)}: Measures the proportion of variance in the target variable explained by the model, ranging from 0 to 1, where 1 indicates perfect prediction.
+    \item \textbf{Mean Absolute Error (MAE)}: Measures average prediction error magnitude.
+    \item \textbf{R² Score}: Measures the proportion of variance explained.
 \end{itemize}
-
-We also analyze feature importance to identify which configuration parameters and hardware specifications have the strongest influence on training outcomes. This analysis provides practical insights for researchers optimizing their RL experiments.
-If the score for R squared is suspiciously high, we rely of MAE entirely.
+If the R² score is suspiciously high, we rely on MAE entirely.

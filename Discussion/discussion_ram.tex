@@ -1,15 +1,18 @@
 \subsection{Peak RAM Usage Prediction (RQ3)}
 
 The results for predicting peak RAM usage indicate significant differences in model performance, heavily influenced by the nature of the data and the specific algorithm (PPO vs. SAC) being modeled.
-
-\textbf{Linear Models:} Linear Regression proved to be suboptimal for this task, achieving $R^2$ scores of 0.83 for PPO and 0.86 for SAC with high Mean Absolute Errors (over 1500 MB). This suggests that the relationship between hyperparameters and RAM usage is non-linear and cannot be adequately captured by simple linear mappings.
-
-\textbf{Neural Networks:} The Artificial Neural Network (MLP Regressor) performed poorly, yielding a negative $R^2$ score for PPO and only 0.52 for SAC, with the highest MAE among all models. While neural networks have high potential capacity, they often require extensive hyperparameter tuning and larger datasets to generalize well. Given our resource constraints and the optimization attempts made, the MLP did not justify the computational cost required to train it compared to other models.
-
-\textbf{Tree-Based Ensembles:} Random Forest and Extra Trees Regressors were among the top performers, demonstrating the robustness of ensemble methods for non-linear data. They achieved excellent results for SAC ($R^2 \approx 0.96$) and PPO ($R^2 \approx 0.99$), effectively capturing the complex interactions between training configurations and memory consumption.
-
-\textbf{Gradient Boosting:} The Histogram Gradient Boosting Regressor performed well ($R^2 \approx 0.99$ for PPO) but showed signs of poor scaling in terms of error. We observed that as the dataset size increased, the MAE for this model tended to grow compared to other tree-based methods. While further optimization might improve its scalability, time constraints limited our ability to tune it further.
-
-\textbf{K-Nearest Neighbors (KNN):} Surprisingly, the KNN Regressor emerged as the most effective model for PPO, achieving the lowest MAE of 57.54 MB and an $R^2$ of 0.99. While it initially performed similarly to linear regression on smaller subsets, it scaled incredibly well with the larger PPO dataset. This suggests that the manifold of RAM usage data is dense enough that local interpolation between training examples provides highly accurate predictions.
-
-In summary, for RAM usage prediction, non-linear models significantly outperform linear ones. Specifically, KNN is the superior choice when sufficient data is available (as seen with PPO), while tree-based ensembles (Random Forest, Extra Trees) provide consistent, high-quality predictions across different data distributions.
+\textbf{Linear Models:} Linear Regression proved to be suboptimal for this task, achieving $R^2$ scores of 0.83 for PPO and 0.86 for SAC with high Mean Absolute Errors (over 1500 MB).
+This suggests that the relationship between hyperparameters and RAM usage is non-linear and cannot be adequately captured by simple linear mappings.
+\textbf{Neural Networks:} The Artificial Neural Network (MLP Regressor) performed poorly, yielding a negative $R^2$ score for PPO and only 0.52 for SAC, with the highest MAE among all models.
+While neural networks have high potential capacity, they often require extensive hyperparameter tuning and larger datasets to generalize well.
+Given our resource constraints and the optimization attempts made, the MLP did not justify the computational cost required to train it compared to other models.
+\textbf{Tree-Based Ensembles:} Random Forest and Extra Trees Regressors were among the top performers, demonstrating the robustness of ensemble methods for non-linear data.
+They achieved excellent results for SAC ($R^2 \approx 0.96$) and PPO ($R^2 \approx 0.99$), effectively capturing the complex interactions between training configurations and memory consumption.
+\textbf{Gradient Boosting:} The Histogram Gradient Boosting Regressor performed well ($R^2 \approx 0.99$ for PPO) but showed signs of poor scaling in terms of error.
+We observed that as the dataset size increased, the MAE for this model tended to grow compared to other tree-based methods.
+While further optimization might improve its scalability, time constraints limited our ability to tune it further.
+\textbf{K-Nearest Neighbors (KNN):} Surprisingly, the KNN Regressor emerged as the most effective model for PPO, achieving the lowest MAE of 57.54 MB and an $R^2$ of 0.99.
+While it initially performed similarly to linear regression on smaller subsets, it scaled incredibly well with the larger PPO dataset.
+This suggests that the manifold of RAM usage data is dense enough that local interpolation between training examples provides highly accurate predictions.
+In summary, for RAM usage prediction, non-linear models significantly outperform linear ones.
+Specifically, KNN is the superior choice when sufficient data is available (as seen with PPO), while tree-based ensembles (Random Forest, Extra Trees) provide consistent, high-quality predictions across different data distributions.
