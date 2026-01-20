@@ -1,1 +1,13 @@
-\subsection{Final Mean Reward Discussion}
+\subsection{Final Mean Reward Discussion(RQ2)}
+Research question 2 centers around the performance prediction of an ML Agent. This metric is defined by the parameter final mean reward, which encapsulates the average of each mean reward in every episode of the training. 
+
+In order to conduct the experiment , 6 prediction models were utilized. Their performance is evaluated by two metrics: Mean Absolute Error and R2 Score , since the predicted target is a continuous variable. 
+
+\subsubsection{Performance Analysis}
+The 6 chosen predictors are all regressor models. Although some of them showed limited predictive performance, they were still useful for interpreting the data and deriving meaningful conclusions.
+
+In terms of the evaluated algorithms, linear regression is not well-suited to our dataset, as the results indicate that the underlying relationships are not predominantly linear.
+Artificial neural networks (MLP Regressor) could be a promising option, but practical resource constraints limited their applicability in this study. Despite extensive tuning, the model consistently produced lower-than-expected performance, and further optimization was deemed inefficient given the time and computational cost.
+Both the Random Forest Regressor and Extra Trees models delivered among the strongest results. Their ensemble structure and inherent randomness make them well-adapted to capturing nonlinear patterns and complex feature interactions.
+Among all models , KNN demonstrates moderate performance across both datasets. While the results show that it performs reasonably well for PPO , the lack of data drags it down significantly for SAC. From KNN , it can be deduced that feature scaling in the data proves to have a huge impact on the performance , as distance metrics cannot capture it on the levels of other models.
+Finally, the Hist Gradient Boosting Regressor performed well on our data; however, its error increased as the dataset size grew, suggesting that its performance scales less favorably in our setting, with mean absolute error rising as more samples are included.

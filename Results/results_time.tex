@@ -1,43 +1,52 @@
 \subsection{Training Duration Prediction Results (RQ1)}
 
+% Row 1: R2 Score and MAE
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{Results/rq1/r2 comp.png}
-    \caption{Comparison of $R^2$ scores across all evaluated models for training duration prediction. Higher values indicate better explanatory performance. Error bars represent cross-validation variability.}
-    \label{fig:R2_comparison}
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[scale=0.5]{Results/rq1/r2 comp.png}
+        \caption{Comparison of $R^2$ scores across all evaluated models for training duration prediction.}
+        \label{fig:R2_comparison}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[scale=0.5]{Results/rq1/mae.png}
+        \caption{Comparison of Mean Absolute Error (MAE) across all evaluated models.}
+        \label{fig:mae}
+    \end{minipage}
 \end{figure}
 
+% Row 2: Combined View and Actual vs Predicted
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{Results/rq1/mae.png}
-    \caption{Comparison of Mean Absolute Error (MAE) across all evaluated models. Lower values indicate more accurate predictions. Error bars represent standard deviation across cross-validation folds.}
-    \label{fig:mae}
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[scale=0.5]{Results/rq1/comb view.png}
+        \caption{Joint comparison of $R^2$ and MAE across models.}
+        \label{fig:combview}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[scale=0.5]{Results/rq1/Picture4.png}
+        \caption{Actual vs. predicted training durations for Gradient Boosting.}
+        \label{fig:gb_actual_vs_predicted}
+    \end{minipage}
 \end{figure}
 
+% Row 3: Residuals and Feature Importance
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{Results/rq1/comb view.png}
-    \caption{Joint comparison of $R^2$ and MAE across models. The bottom-right region indicates strong overall performance (high $R^2$, low MAE).}
-    \label{fig:combview}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Results/rq1/Picture4.png}
-    \caption{Relationship between actual and predicted training durations for the selected Gradient Boosting model. The red dashed line represents perfect prediction.}
-    \label{fig:gb_actual_vs_predicted}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Results/rq1/Picture5.png}
-    \caption{Residual plot showing the difference between actual and predicted values. Random scatter indicates a good fit, while patterns suggest bias.}
-    \label{fig:residuals}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Results/rq1/feature impo.png}
-    \caption{Feature importance derived from the Gradient Boosting model for training duration prediction. \texttt{max\_steps} is the dominant predictor.}
-    \label{fig:feature_importance}
+    \begin{minipage}{0.5\textwidth}
+        \centering
+        \includegraphics[scale=0.5]{Results/rq1/Picture5.png}
+        \caption{Residual plot showing the difference between actual and predicted values.}
+        \label{fig:residuals}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[scale=0.5]{Results/rq1/feature impo.png}
+        \caption{Feature importance derived from the Gradient Boosting model.}
+        \label{fig:feature_importance}
+    \end{minipage}
 \end{figure}

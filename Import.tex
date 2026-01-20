@@ -13,9 +13,10 @@
 % Page geometry
 \geometry{
     a4paper,
-    total={170mm, 257mm},
-    left=20mm,
-    top=20mm,
+    left=15mm,
+    top=15mm,
+    right=15mm,
+    bottom=15mm,
 }
 
 %===============================================================================
@@ -132,6 +133,12 @@
   \hrulefill\raisebox{1.2pt}{\quad\decofourleft\decotwo\decofourright\quad}\hrulefill
   \vspace{3pt}}
 \renewcommand{\footrulewidth}{0.4pt}
+
+% Reduce spacing around Section and Subsection titles
+\titlespacing*{\section}{0pt}{1.5ex plus 1ex minus .2ex}{1ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{1ex plus 1ex minus .2ex}{0.5ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{1ex plus 1ex minus .2ex}{0.5ex plus .2ex}
+
 
 % Header and Footer
 

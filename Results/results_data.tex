@@ -2,14 +2,18 @@
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\linewidth]{Discussion/img/algfreqRQ2.png}
-    \caption{Frequency of algorithms in the dataset. PPO is significantly overrepresented compared to SAC.}
-    \label{fig:algfreq}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\linewidth]{Discussion/img/envfreqRQ2.png}
-    \caption{Frequency of environments in the dataset. Note the dominance of '3DBall' and the scarcity of environments like 'FoodCollector'.}
-    \label{fig:envfreqRQ2}
+    % Left Image
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[scale=0.35]{Discussion/img/algfreqRQ2.png}
+        \caption{Frequency of algorithms in the dataset. PPO is significantly overrepresented compared to SAC.}
+        \label{fig:algfreq}
+    \end{minipage}\hfill
+    % Right Image
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[scale=0.35]{Discussion/img/envfreqRQ2.png}
+        \caption{Frequency of environments in the dataset. Note the dominance of '3DBall' and scarcity of others.}
+        \label{fig:envfreqRQ2}
+    \end{minipage}
 \end{figure}
