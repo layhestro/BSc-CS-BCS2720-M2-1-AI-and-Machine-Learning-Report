@@ -15,3 +15,42 @@
         \label{fig:SACResultsRQ3}
     \end{minipage}
 \end{figure}
+
+\label{sec:rq3_results}
+
+We evaluated six different regression models to predict peak RAM usage for both PPO and SAC algorithms. The performance of each model was measured using the Coefficient of Determination ($R^2$) and Mean Absolute Error (MAE). Table~\ref{tab:ram_results} summarizes these results.
+
+\begin{table}[h]
+    \centering
+    \caption{Performance comparison of RAM usage predictors for PPO and SAC algorithms.}
+    \label{tab:ram_results}
+    \begin{tabular}{l|cc|cc}
+        \hline
+        & \multicolumn{2}{c|}{\textbf{PPO}} & \multicolumn{2}{c}{\textbf{SAC}} \\
+        \textbf{Model} & \textbf{R² Score} & \textbf{MAE (MB)} & \textbf{R² Score} & \textbf{MAE (MB)} \\
+        \hline
+        KNN Regressor & 0.99 & 57.54 & 0.94 & 633.39 \\
+        Linear Regression & 0.83 & 1552.14 & 0.86 & 1797.45 \\
+        Random Forest & 0.99 & 60.20 & 0.96 & 620.07 \\
+        Extra Trees & 0.99 & 81.67 & 0.96 & 621.97 \\
+        Hist. Gradient Boosting & 0.99 & 236.61 & 0.96 & 613.18 \\
+        ANN (MLP Regressor) & -8.82 & 1852.35 & 0.52 & 3747.60 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[scale=0.3]{Results/img/PPOResultsRQ3.png}
+        \caption{PPO Results for Peak RAM Usage Prediction (RQ3).}
+        \label{fig:PPOResultsRQ3}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[scale=0.3]{Results/img/SACResultsRQ3.png}
+        \caption{SAC Results for Peak RAM Usage Prediction (RQ3).}
+        \label{fig:SACResultsRQ3}
+    \end{minipage}
+\end{figure}

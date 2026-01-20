@@ -1,4 +1,13 @@
 \section{Conclusion}
+\label{sec:conclusion}
 
+In this work, we explored the feasibility of using meta-learning to predict the resource consumption and performance of Reinforcement Learning (RL) training runs. By treating RL training as a supervised learning problem, we analyzed the relationships between hyperparameters, environment settings, and training outcomes across three dimensions: wall-clock duration, final mean reward, and peak RAM usage.
 
+Our findings for \textbf{Training Duration (RQ1)} indicate that while wall-clock time is inherently stochastic, Gradient Boosting Regressors can predict duration with a low Mean Absolute Error (MAE) of 2--3 minutes. Feature analysis confirmed that \texttt{max\_steps} and environment complexity are the dominant factors, though the variance in execution time (reflected in a moderate $R^2$) suggests that external system factors also play a significant role.
 
+For \textbf{Performance Prediction (RQ2)}, we observed that the relationship between hyperparameters and final reward is highly non-linear. Linear models failed to capture these dynamics, whereas ensemble methods like Random Forest and Extra Trees proved effective. This demonstrates that meta-learning can assist in identifying promising hyperparameter configurations without full execution, provided the model is trained on a sufficiently diverse dataset.
+
+Our analysis of \textbf{Peak RAM Usage (RQ3)} yielded the strongest predictive results. We achieved exceptional accuracy ($R^2$ scores up to 0.99 for PPO) using K-Nearest Neighbors and Random Forest models. This suggests that memory consumption is a deterministic function of the input configuration and can be reliably forecasted to prevent out-of-memory errors in resource-constrained environments.
+
+\subsection{Future Work}
+Future research should focus on expanding the dataset to include a wider variety of environments and RL algorithms to improve generalization. Additionally, addressing the data sparsity for long-duration training runs could improve the robustness of time prediction models. Finally, integrating these predictive models into an automated scheduling tool could directly optimize cluster usage by bin-packing training jobs based on their predicted RAM and time requirements.
