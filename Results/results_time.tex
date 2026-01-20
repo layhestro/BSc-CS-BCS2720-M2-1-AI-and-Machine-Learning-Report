@@ -5,13 +5,13 @@
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[scale=0.35]{Results/rq1/r2 comp.png}
+        \includegraphics[scale=0.45]{Results/rq1/r2 comp.png}
         \caption{Comparison of $R^2$ scores across all evaluated models for training duration prediction.}
         \label{fig:R2_comparison}
     \end{minipage}\hfill
     \begin{minipage}{0.35\textwidth}
         \centering
-        \includegraphics[scale=0.4]{Results/rq1/mae.png}
+        \includegraphics[scale=0.45]{Results/rq1/mae.png}
         \caption{Comparison of Mean Absolute Error (MAE) across all evaluated models.}
         \label{fig:mae}
     \end{minipage}
@@ -22,13 +22,13 @@
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[scale=0.35]{Results/rq1/comb view.png}
+        \includegraphics[scale=0.45]{Results/rq1/comb view.png}
         \caption{Joint comparison of $R^2$ and MAE across models.}
         \label{fig:combview}
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[scale=0.35]{Results/rq1/Picture4.png}
+        \includegraphics[scale=0.45]{Results/rq1/Picture4.png}
         \caption{Actual vs. predicted training durations for Gradient Boosting.}
         \label{fig:gb_actual_vs_predicted}
     \end{minipage}
@@ -39,14 +39,35 @@
     \centering
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[scale=0.35]{Results/rq1/Picture5.png}
+        \includegraphics[scale=0.45]{Results/rq1/Picture5.png}
         \caption{Residual plot showing the difference between actual and predicted values.}
         \label{fig:residuals}
     \end{minipage}\hfill
     \begin{minipage}{0.5\textwidth}
         \centering
-        \includegraphics[scale=0.35]{Results/rq1/feature impo.png}
+        \includegraphics[scale=0.45]{Results/rq1/feature impo.png}
         \caption{Feature importance derived from the Gradient Boosting model.}
         \label{fig:feature_importance}
     \end{minipage}
 \end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Performance comparison of training duration predictors across all evaluated models. Results show 5-fold stratified cross-validation performance.}
+    \label{tab:duration_results}
+    \begin{tabular}{rlcc}
+        \hline
+        \textbf{Rank} & \textbf{Model} & \textbf{MAE (seconds)} & \textbf{R² Score} \\
+        \hline
+        1 & Gradient Boosting (default) & 147.68 ± 55.72 & 0.3857 ± 0.2121 \\
+        2 & HistGradientBoosting (tuned) & 147.90 ± 56.00 & 0.3755 ± 0.2109 \\
+        3 & HistGradientBoosting (default) & 155.08 ± 53.56 & 0.3593 ± 0.1909 \\
+        4 & Random Forest (tuned) & 158.58 ± 51.84 & 0.3492 ± 0.1927 \\
+        5 & Extra Trees & 165.70 ± 52.53 & 0.3352 ± 0.1998 \\
+        6 & KNN (k=5, distance-weighted) & 284.31 ± 58.19 & 0.2061 ± 0.1380 \\
+        7 & KNN (k=9, distance-weighted) & 284.57 ± 59.38 & 0.1944 ± 0.1363 \\
+        8 & Ridge (alpha=1.0) & 279.53 ± 48.35 & 0.0583 ± 0.2098 \\
+        9 & Linear Regression & 280.46 ± 47.92 & 0.0243 ± 0.2739 \\
+        \hline
+    \end{tabular}
+\end{table}

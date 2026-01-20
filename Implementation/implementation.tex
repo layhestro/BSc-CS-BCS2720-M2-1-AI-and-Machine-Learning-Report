@@ -40,7 +40,7 @@ y_{transformed} = \log(1 + y_{seconds})
 Categorical variables are encoded using OrdinalEncoder. No standardization is applied to numeric features, as tree-based models are scale-invariant.
 
 \subsubsection{Cross-Validation Strategy}
-We implement stratified 5-fold cross-validation. The stratification divides training durations into quintiles, ensuring each fold contains a balanced mix of short, medium, and long training runs.
+We implement stratified 5-fold cross-validation \cite{kohavi1995study}. The stratification divides training durations into quintiles, ensuring each fold contains a balanced mix of short, medium, and long training runs.
 
 \subsubsection{Model Registry}
 We implement a model registry pattern to systematically compare algorithms:

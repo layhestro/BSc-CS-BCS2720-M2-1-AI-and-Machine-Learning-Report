@@ -12,7 +12,7 @@ This section formalizes our research questions and describes the machine learnin
 \textbf{Input Features ($X$):}
 \begin{itemize}
     \item \texttt{environment}: Categorical (15 Unity environments)
-    \item \texttt{algorithm}: Categorical (PPO, SAC, POCA, Imitation Learning)
+    \item \texttt{algorithm}: Categorical (PPO \cite{schulman2017proximal}, SAC \cite{haarnoja2018soft})
     \item \texttt{learning\_rate}: Float
     \item \texttt{batch\_size}: Integer
     \item \texttt{hidden\_units}: Integer
@@ -77,7 +77,7 @@ This section formalizes our research questions and describes the machine learnin
     \item \texttt{peak\_ram\_mb}: Float (maximum RAM usage in MB)
 \end{itemize}
 
-\textbf{ML Approach:} We compare Linear Regression, Random Forest, Extra Trees, KNN, HistGradient Boosting, and MLPRegressor.
+\textbf{ML Approach:} We compare Linear Regression, Random Forest\cite{breiman2001random}, Extra Trees, KNN, HistGradient Boosting, and MLPRegressor.
 
 \subsection{Evaluation Metrics}
 We evaluate model performance using:

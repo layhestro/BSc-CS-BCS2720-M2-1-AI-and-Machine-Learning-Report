@@ -7,7 +7,7 @@ For this purpose, nine regression models were evaluated to predict training dura
 Figure~\ref{fig:R2_comparison} shows the comparison of $R^2$ scores across all models, while Figure~\ref{fig:mae} presents the corresponding MAE values. Gradient Boosting achieved the highest $R^2$ (0.39) and the lowest MAE (2--3 minutes), outperforming linear models, k-nearest neighbors, and other ensemble methods.
 
 \subsubsection{Performance Analysis}
-Gradient Boosting achieved the best performance for training distribution due to its ability to model complex non-linear relationships and interactions between input features. Training duration in reinforcement learning is influenced by multiple factors that do not combine linearly, such as training budget, environment characteristics, and hardware constraints.
+Gradient Boosting \cite{friedman2001greedy}achieved the best performance for training distribution due to its ability to model complex non-linear relationships and interactions between input features. Training duration in reinforcement learning is influenced by multiple factors that do not combine linearly, such as training budget, environment characteristics, and hardware constraints.
 
 Gradient boosting incrementally builds an ensemble of decision trees that correct previous errors, allowing it to capture subtle dependencies and interaction effects that are not well represented by linear models. In addition, tree-based boosting methods naturally handle mixed feature types and heterogeneous scales, making them well suited for datasets that combine numerical hyperparameters with categorical environment and hardware information.
 
@@ -17,7 +17,7 @@ Although the selected model achieves a low mean absolute error (see Figure~\ref{
 As a result, while the model can accurately estimate typical training durations within a small absolute error margin, a substantial portion of the total variance in duration remains unexplained. In addition, rare but extreme long-running training instances disproportionately affect variance-based metrics such as $R^2$, further limiting the achievable explanatory power despite strong practical accuracy.
 
 \subsubsection{Interpretation of Feature Importance}
-The feature importance analysis (Figure~\ref{fig:feature_importance}) provides insight into the primary drivers of training duration. The dominance of \texttt{max\_steps} reflects the fundamental structure of reinforcement learning training, where each additional interaction step directly increases computational workload and runtime.
+The feature importance \cite{strobl2007bias} analysis (Figure~\ref{fig:feature_importance}) provides insight into the primary drivers of training duration. The dominance of \texttt{max\_steps} reflects the fundamental structure of reinforcement learning training, where each additional interaction step directly increases computational workload and runtime.
 
 Environment type also plays an important role, as different environments vary in complexity, simulation cost, and physics calculations, leading to differences in time per step even when training budgets are comparable. In contrast, network architecture and optimization hyperparameters, such as learning rate, batch size, and number of layers, have a comparatively small impact on wall-clock training time. While these parameters strongly influence learning dynamics and performance, they do not substantially alter the number of environment interactions required, and therefore contribute less to overall training duration.
 
