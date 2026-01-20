@@ -1,40 +1,14 @@
 \section{Results}
-\subsection{Result Time Predictor}
+\label{sec:results}
 
-\subsection{Result Reward Predictor}
-\begin{figure}[h]
-    \centering
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{Results/img/PPOResultsRQ2.png}
-        \captionof{figure}{PPO Results}
-        \label{fig:PPOResultsRQ2}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{Results/img/SACResultsRQ2.png}
-        \captionof{figure}{SAC Results}
-        \label{fig:SACResultsRQ2}
-    \end{minipage}
-    \caption{Reward Prediction Results (RQ2)}
-\end{figure}
+% Data Distribution Results
+\input{Results/results_data}
 
-\subsection{Result RAM Predictor}
-\begin{figure}[h]
-    \centering
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{Results/img/PPOResultsRQ3.png}
-        \captionof{figure}{PPO Results}
-        \label{fig:PPOResultsRQ3}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.45\textwidth}
-        \centering
-        \includegraphics[width=0.9\linewidth]{Results/img/SACResultsRQ3.png}
-        \captionof{figure}{SAC Results}
-        \label{fig:SACResultsRQ3}
-    \end{minipage}
-    \caption{RAM Usage Prediction Results (RQ3)}
-\end{figure}
+% RQ1 Results
+\input{Results/results_time}
+
+% RQ2 Results
+\input{Results/results_reward}
+
+% RQ3 Results
+\input{Results/result_ram}

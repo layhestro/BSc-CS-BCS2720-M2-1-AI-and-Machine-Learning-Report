@@ -1,38 +1,43 @@
-\subsection{time result}
+\subsection{Training Duration Prediction Results (RQ1)}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{Results/rq1/r2 comp.png}
-    \caption{Comparison of R² scores across all evaluated models for training duration prediction. Higher values indicate better explanatory performance. Error bars represent cross-validation variability.}
-    \label{fig:R2 comparison}
+    \includegraphics[width=0.8\linewidth]{Results/rq1/r2 comp.png}
+    \caption{Comparison of $R^2$ scores across all evaluated models for training duration prediction. Higher values indicate better explanatory performance. Error bars represent cross-validation variability.}
+    \label{fig:R2_comparison}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{Results/rq1/mae.png}
-    \caption{Comparison of mean absolute error (MAE) across all evaluated models. Lower values indicate more accurate predictions. Error bars represent standard deviation across cross-validation folds.}
+    \includegraphics[width=0.8\linewidth]{Results/rq1/mae.png}
+    \caption{Comparison of Mean Absolute Error (MAE) across all evaluated models. Lower values indicate more accurate predictions. Error bars represent standard deviation across cross-validation folds.}
     \label{fig:mae}
 \end{figure}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{Results/rq1/comb view.png}
-    \caption{Joint comparison of R² and MAE across models. The bottom-right region indicates strong overall performance}
+    \includegraphics[width=0.8\linewidth]{Results/rq1/comb view.png}
+    \caption{Joint comparison of $R^2$ and MAE across models. The bottom-right region indicates strong overall performance (high $R^2$, low MAE).}
     \label{fig:combview}
 \end{figure}
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{Results/rq1/Picture4.png}
-    \caption{Figure A presents the relationship between actual and predicted training durations for the seletcted model}
-    \label{fig:gb}
+    \includegraphics[width=0.8\linewidth]{Results/rq1/Picture4.png}
+    \caption{Relationship between actual and predicted training durations for the selected Gradient Boosting model. The red dashed line represents perfect prediction.}
+    \label{fig:gb_actual_vs_predicted}
 \end{figure}
-\begin{figure}
+
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{Results/rq1/Picture5.png}
-    \caption{while Figure B shows the corresponding residuals, these figures summarize the predictive performance and error characteristics of the champion model.}
-    \label{fig:f5}
+    \includegraphics[width=0.8\linewidth]{Results/rq1/Picture5.png}
+    \caption{Residual plot showing the difference between actual and predicted values. Random scatter indicates a good fit, while patterns suggest bias.}
+    \label{fig:residuals}
 \end{figure}
-\begin{figure}
+
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{Results/rq1/feature impo.png}
-    \caption{Figure C shows the feature importance derived from the Gradient Boosting model for training duration prediction}
-    \label{fig:fi}
+    \includegraphics[width=0.8\linewidth]{Results/rq1/feature impo.png}
+    \caption{Feature importance derived from the Gradient Boosting model for training duration prediction. \texttt{max\_steps} is the dominant predictor.}
+    \label{fig:feature_importance}
 \end{figure}
