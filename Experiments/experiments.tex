@@ -1,4 +1,165 @@
 \section{Experiments}
-\input{Experiments/exp_time}
-\input{Experiments/exp_reward}
-\input{Experiments/exp_ram}
+\subsection{Research Question 1: Experimental Setup}
+
+\subsubsection{Dataset Characteristics}
+After data cleaning and preparation, the duration prediction dataset contains:
+\begin{itemize}
+    \item \textbf{Total Samples}: 5,673 valid training runs
+    \item \textbf{Features}: 24 predictors (2 categorical, 22 numeric)
+    \item \textbf{Duration Range}: 364 seconds (6 minutes) to 70,560 seconds (19.6 hours)
+    \item \textbf{Environments}: 7 Unity ML-Agents environments with varying complexity
+    \item \textbf{Algorithms}: 2 RL algorithms (PPO, SAC)
+\end{itemize}
+The wide duration range (nearly 200x difference between shortest and longest runs) motivated the log transformation approach to prevent models from being dominated by long-duration outliers.
+
+\subsubsection{Experiment 1: Model Family Comparison}
+\textbf{Objective}: Determine which model family (linear, tree-based, distance-based) performs best for duration prediction.
+
+\textbf{Method}: Train and evaluate representative models from each family:
+\begin{itemize}
+    \item Linear: Linear Regression, Ridge
+    \item Tree-based: Random Forest, Extra Trees, Gradient Boosting, HistGradient Boosting
+    \item Distance-based: K-Nearest Neighbors
+\end{itemize}
+
+\textbf{Evaluation}: 5-fold stratified cross-validation with MAE (mean absolute error) and R² score as primary metrics.
+
+\subsubsection{Experiment 2: Hyperparameter Sensitivity}
+\textbf{Objective}: Assess whether default hyperparameters are sufficient or if tuning provides substantial gains.
+
+\textbf{Method}: Compare default configurations against tuned versions for Ridge (alpha parameter), Random Forest (tree depth, leaf size), KNN (number of neighbors), and HistGradient Boosting (learning rate, max iterations).
+
+\textbf{Tuning Approach}: GridSearchCV with 3-fold inner cross-validation to select optimal hyperparameters without overfitting.
+
+\subsubsection{Experiment 3: Feature Importance Analysis}
+\textbf{Objective}: Identify which configuration parameters most strongly influence training duration.
+
+\textbf{Method}: Extract feature importance scores from the best tree-based model (Gradient Boosting) based on reduction in node impurity. Rank features by importance and analyze the top predictors.
+
+\subsubsection{Experiment 4: Prediction Error Analysis}
+\textbf{Objective}: Characterize model errors to understand failure modes and limitations.
+
+\textbf{Method}: Generate residual plots (predicted vs actual) and error distributions for the champion model. Analyze whether errors are systematic (bias) or random (variance).
+
+\subsubsection{Reproducibility Measures}
+To ensure experiments can be replicated:
+\begin{itemize}
+    \item Fixed random seed (42) for all stochastic operations
+    \item Identical cross-validation splits across all models
+    \item Documented software versions (Python 3, pandas 2.2.2, numpy 2.0.2, scikit-learn)
+    \item Version-controlled code in Jupyter notebook format
+    \item Persistent storage of trained models and intermediate results
+\end{itemize}
+All experiments were executed on Google Colab with consistent computational resources (CPU-based training, no GPU required for tabular data).
+
+
+
+
+
+\subsection{Research Question 2: Experimental Setup}
+
+\subsubsection{Dataset Characteristics}
+
+After preprocessing and algorithm-specific filtering, the performance prediction dataset contains:
+\begin{itemize}
+    \item \textbf{Target Variable}: \texttt{final\_mean\_reward} representing the average cumulative reward achieved by the trained agent
+    \item \textbf{Algorithm Splits}: Separate datasets for PPO and SAC algorithms due to severe data imbalance in the full dataset (see Figure~\ref{fig:algfreq})
+    \item \textbf{Features}: Configuration parameters including environment type, hyperparameters (learning rate, batch size, hidden units, number of layers), and training settings
+    \item \textbf{Excluded Features}: Post-training variables (peak RAM, training duration, timestamp) to prevent data leakage
+\end{itemize}
+
+The reward values vary significantly across different environments, reflecting natural difficulty differences. Simple environments like 3DBall can achieve rewards close to 100, while complex multi-agent environments have much lower reward scales.
+
+\subsubsection{Experiment 1: Model Family Comparison}
+\textbf{Objective}: Identify which regression model architecture best captures the relationship between training configuration and final agent performance.
+
+\textbf{Method}: Train and evaluate multiple model families on algorithm-specific data:
+\begin{itemize}
+    \item \textbf{Distance-based}: K-Nearest Neighbors with default parameters (5 neighbors)
+    \item \textbf{Linear}: Linear Regression as a baseline
+    \item \textbf{Neural Network}: Multi-Layer Perceptron with one hidden layer (100 units), tanh activation, early stopping enabled
+    \item \textbf{Tree Ensembles}: Random Forest (100 trees), Extra Trees (100 trees), Histogram Gradient Boosting
+\end{itemize}
+
+\textbf{Evaluation}: 10-fold cross-validation with R² score and Mean Absolute Error (MAE) as primary metrics. R² indicates how much variance in final reward the model explains (0 to 1 scale). MAE measures average prediction error in reward units.
+
+\textbf{Rationale}: Testing diverse model families helps identify whether performance prediction requires simple linear relationships, complex non-linear patterns, or similarity-based reasoning. Different models have different strengths for this task.
+
+\subsubsection{Experiment 2: Algorithm Separation Validation}
+\textbf{Objective}: Validate the decision to train separate models for different RL algorithms rather than a single unified model.
+
+\textbf{Method}: Train algorithm-specific models (one for PPO, one for SAC) and evaluate each on its corresponding test data. The separation addresses the severe data imbalance where PPO runs vastly outnumber SAC runs.
+
+\textbf{Rationale}: Different RL algorithms have fundamentally different learning dynamics. PPO is on-policy and updates frequently, while SAC is off-policy with experience replay. The same hyperparameter values (like learning rate) affect these algorithms completely differently. Algorithm-specific models can learn these distinct patterns without interference.
+
+\subsubsection{Experiment 3: Cross-Validation Stability Analysis}
+\textbf{Objective}: Assess whether model performance is consistent across different data splits or highly variable.
+
+\textbf{Method}: Use 10-fold cross-validation and record performance metrics (R² and MAE) for each fold. Calculate mean and standard deviation across folds to measure stability.
+
+\textbf{Rationale}: High variance across folds would indicate the model is sensitive to which specific training runs are included, suggesting either overfitting or insufficient data. Consistent performance across folds indicates robust learning.
+
+\subsubsection{Reproducibility Measures}
+
+To ensure experiments can be replicated:
+\begin{itemize}
+    \item Fixed random seed (42) for all stochastic operations (data shuffling, cross-validation splits)
+    \item Identical preprocessing pipeline applied to all models (categorical encoding, missing value handling)
+    \item Same 10-fold cross-validation splits used across all models for fair comparison
+    \item Model code implemented in Jupyter notebook with clear cell structure
+    \item All trained models saved with joblib for verification
+    \item Google Colab environment with consistent computational resources
+\end{itemize}
+
+% \subsubsection{Experimental Challenges}
+
+% Two main challenges affect this research question:
+
+% \textbf{Algorithm Imbalance}: The dataset contains significantly more PPO training runs than SAC runs. This imbalance motivated our algorithm separation strategy, but it also means SAC models have less training data and may generalize less reliably.
+
+% \textbf{Environment Diversity}: The dataset includes environments with vastly different reward scales and structures (see Figure~\ref{fig:envfreqRQ2}). Some environments are overrepresented (3DBall) while others have very few training runs (FoodCollector). This imbalance could bias models toward predicting well for common environments while performing poorly on rare ones.
+
+
+
+
+\subsection{Research Question 3: Experimental Setup}
+
+\subsubsection{Dataset Characteristics}
+
+Data processing and algorithm-specific filtering was done in the same fashion as for Research Question 2:
+\begin{itemize}
+    \item \textbf{Setting Target Variable}
+    \item \textbf{Algorithm Split}
+    \item \textbf{Selecting Features}
+    \item \textbf{Dropping Features to avoid data-leakage}
+\end{itemize}
+
+\subsubsection{Experiment 1: Model Evaluation}
+
+\textbf{Objective}: Identify which regresion model best captures the relationship between training configuration and final RL algorithm RAM usage.
+
+\textbf{Method}: Train models mentioned Methodology and Implementation (\ref{methodsrq3})(\ref{implmodelselectionrq3}).
+
+\textbf{Evaluation}: Using 10-fold cross-validation with R2 score and Mean Absolute Error (MAE) as primary metrics.
+
+\textbf{Rationale}: Testing diverse model families helps identify whether performance prediction requires simple lin-
+ear relationships, complex non-linear patterns, or similarity-based reasoning. Different models have different
+strengths for this task.
+
+\subsubsection{Experiment 2: Algorithm Separation Validation}
+\textbf{Objective}: Validate the decision to train separate models for different RL algorithms rather than a single unified model.
+
+\textbf{Method}: Train algorithm-specific models and evaluate each on its corresponding test data.
+
+\textbf{Rationale}: The data contains unbalanced amount of PPO and SAC. Different RL algorithms have fundamentally different learning dynamics. The same hyperparameter values affect these algorithms completely differently. Lack of necessary ML Agent RL configuration hyper-parameters for SAC in data will definitely result in unequal results.
+
+\subsubsection{Reproducibility Measures}
+\begin{itemize}
+    \item Fixed random seed (42) for all stochastic operations (data shuffling, cross-validation splits)
+    \item Identical preprocessing pipeline applied to all models (categorical encoding, missing value handling)
+    \item Same 10-fold cross-validation splits used across all models for fair comparison
+    \item Same specific model hyper-parameters (For model performance to be comparable)
+    \item Model code implemented in Jupyter notebook with clear cell structure
+    \item All trained models saved with joblib for verification
+    \item Google Colab environment with consistent computational resources
+\end{itemize}

@@ -55,7 +55,7 @@ This section formalizes our research questions and describes the machine learnin
 
 \textbf{ML Approach:} We test Random Forest and Gradient Boosting (effective for non-linear hyperparameter relationships) and Neural Networks (MLPRegressor) with regularization to prevent overfitting. The same cross-validation strategy is used for robust evaluation.
 
-\subsection{Research Question 3: Resource Usage Prediction}
+\subsection{Research Question 3: RAM Usage Prediction}\label{methodsrq3}
 
 \textbf{Problem Statement:} Can we predict peak RAM usage during training based on environment configuration and hyperparameters?
 
@@ -66,11 +66,13 @@ This section formalizes our research questions and describes the machine learnin
 \textbf{Input Features ($X$):}
 \begin{itemize}
     \item \texttt{environment}: Categorical (15 environments as listed above)
-    \item \texttt{algorithm}: Categorical (PPO, SAC, POCA, Imitation Learning)
+    \item \texttt{algorithm}: Categorical (PPO, SAC)
     \item \texttt{batch\_size}: Integer (larger batches typically require more memory)
     \item \texttt{buffer\_size}: Integer (experience replay buffer size)
     \item \texttt{hidden\_units}: Integer (larger networks require more memory)
     \item \texttt{num\_layers}: Integer (deeper networks require more memory)
+    \item \texttt{ram\_gb}: Float (maximum RAM of a device to have the limit of a memory)
+    \item \texttt{cpu\_cores} Integer (with more core the device may use more CPU which results in more RAM usage)
 \end{itemize}
 
 \textbf{Target Variable ($y$):}
@@ -78,7 +80,7 @@ This section formalizes our research questions and describes the machine learnin
     \item \texttt{peak\_ram\_mb}: Float (maximum RAM usage in megabytes during training)
 \end{itemize}
 
-\textbf{ML Approach:} Memory usage may exhibit more linear relationships as it often scales predictably with certain parameters (buffer size, network size). We start with Linear Regression as baseline and compare with Random Forest, Extra Trees, and KNN. We also test HistGradient Boosting and MLPRegressor for potential non-linear effects.
+\textbf{ML Approach:} Memory usage may exhibit more linear relationships as it often scales predictably with certain parameters (buffer size, network size). We start with Linear Regression (LR) as baseline and compare with Random Forest Regressor(RFR), Extra Trees Regressor(ETR), and KNN. We also test HistGradient Boosting Regressor(HGBR) and MLPRegressor or Artificial Neural Network(ANN) for potential non-linear effects.
 
 \subsection{Evaluation Metrics}
 
@@ -91,3 +93,4 @@ We evaluate model performance using two primary metrics:
 \end{itemize}
 
 We also analyze feature importance to identify which configuration parameters and hardware specifications have the strongest influence on training outcomes. This analysis provides practical insights for researchers optimizing their RL experiments.
+If the score for R squared is suspiciously high, we rely of MAE entirely.

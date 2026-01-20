@@ -1,4 +1,195 @@
 \section{Implementation}
-\input{Implementation/implementation_time}
-\input{Implementation/implementation_rewards}
-\input{Implementation/implementation_ram}
+\subsection{Research Question 1: Duration Prediction Implementation}
+
+This section describes the software implementation for predicting RL training duration based on configuration parameters and hardware specifications.
+
+\subsubsection{Software Environment}
+
+The duration prediction pipeline was implemented in Python using Google Colab with the following core dependencies:
+
+\begin{itemize}
+    \item \textbf{Data Processing}: pandas 2.2.2, numpy 2.0.2
+    \item \textbf{Machine Learning}: scikit-learn (recent version) for all models and preprocessing
+    \item \textbf{Visualization}: matplotlib, seaborn
+    \item \textbf{Storage}: Google Drive integration for persistent data and model storage
+    \item \textbf{Utilities}: joblib for model serialization
+\end{itemize}
+
+All experiments used a fixed random seed (42) for reproducibility across runs.
+
+\subsubsection{Data Pipeline Architecture}
+
+The implementation follows a modular pipeline structure with distinct stages:
+
+\paragraph{Stage 1: Data Loading and Cleaning}
+The master dataset containing 5,799 training runs is loaded from CSV format. Missing values are handled through domain-specific imputation:
+\begin{itemize}
+    \item Hardware features (\texttt{gpu\_available}, \texttt{gpu\_memory\_gb}) default to False and 0
+    \item Numeric hyperparameters filled with 0 (appropriate for optional parameters)
+    \item Rows with missing target values (\texttt{training\_duration\_seconds}) are dropped
+\end{itemize}
+
+After cleaning, the dataset contains 5,673 valid training runs with complete feature and target information.
+
+\paragraph{Stage 2: Feature Engineering}
+To prevent data leakage, features that could only be known after training completion are excluded from the predictor set. Specifically excluded:
+\begin{itemize}
+    \item Performance metrics: \texttt{final\_mean\_reward}, \texttt{final\_std\_reward}
+    \item Resource usage: \texttt{peak\_ram\_mb}
+    \item Training metadata: \texttt{total\_steps\_actual}, \texttt{timestamp}
+\end{itemize}
+
+The final feature set contains 24 predictors including categorical features (\texttt{environment}, \texttt{algorithm}, \texttt{os}, \texttt{gpu\_name}) and numeric features (hyperparameters and hardware specifications).
+
+\paragraph{Stage 3: Target Transformation}
+Training durations range from 364 seconds (6 minutes) to 70,560 seconds (19.6 hours), spanning approximately 200-fold variation. To stabilize variance and improve model performance, we apply log transformation:
+
+\begin{equation}
+y_{transformed} = \log(1 + y_{seconds})
+\end{equation}
+
+The $\log(1 + x)$ formulation handles zero values gracefully while compressing the range of duration values.
+
+\paragraph{Stage 4: Preprocessing Pipeline}
+Categorical variables are encoded using OrdinalEncoder, converting environment names and algorithm types to integer representations. This encoding is appropriate for tree-based models that can learn non-linear relationships between categories. No standardization is applied to numeric features, as tree-based models are scale-invariant.
+
+\subsubsection{Cross-Validation Strategy}
+
+To ensure robust performance estimates, we implement stratified 5-fold cross-validation. The stratification strategy divides training durations into quintiles, ensuring each fold contains a balanced mix of short, medium, and long training runs. This prevents individual folds from being dominated by a single duration range.
+
+The cross-validation process:
+\begin{enumerate}
+    \item Split data into 5 folds (80\% train, 20\% validation per fold)
+    \item For each fold:
+    \begin{itemize}
+        \item Train model on 4 folds
+        \item Evaluate on held-out fold
+        \item Record MAE and R² score
+    \end{itemize}
+    \item Aggregate metrics: compute mean and standard deviation across folds
+\end{enumerate}
+
+\subsubsection{Model Registry}
+
+We implement a model registry pattern to systematically compare algorithms:
+
+\textbf{Linear Models:}
+\begin{itemize}
+    \item \textbf{Linear Regression}: Baseline model with no regularization
+    \item \textbf{Ridge Regression}: L2 regularization with GridSearchCV over $\alpha \in \{0.01, 0.1, 1, 3.16, 10, 31.6, 100\}$
+\end{itemize}
+
+\textbf{Tree-Based Ensembles:}
+\begin{itemize}
+    \item \textbf{Random Forest}: 100 trees with tuned hyperparameters (max depth, min samples leaf)
+    \item \textbf{Extra Trees}: 100 extremely randomized trees
+    \item \textbf{Gradient Boosting}: Sequential boosting with default scikit-learn parameters
+    \item \textbf{HistGradient Boosting}: Histogram-based gradient boosting with native categorical support, tested with both default and tuned parameters
+\end{itemize}
+
+\textbf{Distance-Based Models:}
+\begin{itemize}
+    \item \textbf{K-Nearest Neighbors}: Grid search over $k \in \{3, 5, 7, 9, 15, 25, 35, 50\}$ with distance weighting
+\end{itemize}
+
+Each model is trained using the same preprocessing pipeline and cross-validation protocol to ensure fair comparison.
+
+\subsubsection{Model Persistence and Outputs}
+
+After cross-validation, the best-performing model (Gradient Boosting) is retrained on the complete dataset to maximize available training data. The trained model is serialized using joblib and saved with preprocessing metadata for deployment.
+
+The implementation generates three categories of outputs:
+
+\begin{enumerate}
+    \item \textbf{Results Files}: CSV tables with model comparison metrics, fold-by-fold performance, and feature importance scores
+    \item \textbf{Visualizations}: Performance comparison plots, actual vs predicted scatter plots, residual distributions, and feature importance charts
+    \item \textbf{Trained Models}: Serialized model objects with preprocessing pipelines for each tested algorithm
+\end{enumerate}
+
+All outputs are stored in organized directories (Results, Visuals, Models) within the Google Drive project folder for easy access and version control.
+
+
+\subsection{Research Question 2: Performance Prediction Implementation}
+
+This section describes the software implementation for predicting final agent performance (mean reward) based on configuration parameters and hardware specifications.
+
+\subsubsection{Software Environment}
+
+The performance prediction pipeline was implemented in Python using Google Colab with the following dependencies:
+
+\begin{itemize}
+    \item \textbf{Data Processing}: pandas, numpy
+    \item \textbf{Machine Learning}: scikit-learn for all models and preprocessing
+    \item \textbf{Storage}: joblib for model serialization
+\end{itemize}
+
+All experiments used a fixed random seed (42) for reproducibility.
+
+\subsubsection{Data Pipeline}
+
+The master dataset was loaded and preprocessed to focus on performance prediction. Missing values in the target variable (\texttt{final\_mean\_reward}) were removed. To prevent data leakage, features that could only be known after training completion were excluded: \texttt{gpu}, \texttt{peak\_ram\_mb}, \texttt{timestamp}, \texttt{gpu\_memory\_gb}, and \texttt{training\_duration\_seconds}.
+
+Similar to RQ3, the significant data imbalance between algorithms required training separate models for PPO and SAC. Categorical features were encoded using LabelEncoder, and missing values in feature columns were filled with zero.
+
+\subsubsection{Model Selection}
+
+Six regression models were evaluated to compare different learning approaches:
+
+\begin{itemize}
+    \item \textbf{K-Nearest Neighbors}: Default parameters
+    \item \textbf{Linear Regression}: Default parameters
+    \item \textbf{Multi-Layer Perceptron}: 100 hidden units, tanh activation, Adam solver with momentum (0.7), early stopping enabled, max 20,000 iterations
+    \item \textbf{Random Forest}: 100 trees, min\_samples\_split=5, min\_samples\_leaf=4
+    \item \textbf{Extra Trees}: 100 trees, min\_samples\_split=5, min\_samples\_leaf=4, bootstrap disabled
+    \item \textbf{HistGradientBoostingRegressor}: learning\_rate=0.1, min\_samples\_leaf=3, l2\_regularization=0.1, max\_bins=180, early stopping enabled
+\end{itemize}
+
+\subsubsection{Cross-Validation Strategy}
+
+Model performance was evaluated using 10-fold cross-validation with shuffling enabled. Performance was assessed using R² score and MAE, both appropriate for continuous regression targets. After cross-validation, models were retrained on the complete dataset for deployment.
+
+\subsection{Research Question 3: RAM Prediction Implementation}
+
+This section describes the software implementation for predicting peak RAM usage during RL training based on configuration parameters and hardware specifications.
+
+\subsubsection{Software Environment}
+
+The RAM prediction pipeline was implemented in Python using Google Colab with the following dependencies:
+
+\begin{itemize}
+    \item \textbf{Data Processing}: pandas, numpy
+    \item \textbf{Machine Learning}: scikit-learn for all models and preprocessing
+    \item \textbf{Storage}: joblib for model serialization
+\end{itemize}
+
+All experiments used a fixed random seed (42) for reproducibility.
+
+\subsubsection{Data Pipeline}
+
+The master dataset was loaded and preprocessed to focus on RAM prediction. Missing values in the target variable (\texttt{peak\_ram\_mb}) were removed. To prevent data leakage, features that could only be known after training completion were excluded: \texttt{gpu}, \texttt{peak\_ram\_mb}, \texttt{timestamp}, \texttt{final\_mean\_reward}, \texttt{gpu\_memory\_gb}, and \texttt{training\_duration\_seconds}.
+
+Due to significant data imbalance between algorithms (PPO dominated the dataset), separate models were trained for PPO and SAC to improve prediction accuracy. Categorical features were encoded using LabelEncoder, converting environment names and algorithm types to integer representations. Missing values in feature columns were filled with zero.
+
+\subsubsection{Model Selection and Hyperparameters}\label{implmodelselectionrq3}
+
+
+Six regression models were evaluated. For most models, scikit-learn default hyperparameters were used with the following exceptions to reduce overfitting:
+
+\begin{itemize}
+    \item \textbf{MLPRegressor}: Increased max\_iter to 1000 (from default 200) to ensure convergence
+    \item \textbf{Random Forest \& Extra Trees}: Increased min\_samples\_split to 5 (from 2) and min\_samples\_leaf to 4 (from 1)
+    \item \textbf{HistGradientBoostingRegressor}: Decreased max\_bins to 180 (from 255) and min\_samples\_leaf to 3 (from 20)
+\end{itemize}
+
+These adjustments were determined through trial and error to minimize overfitting and reduce MAE.
+
+\subsubsection{Cross-Validation Strategy}
+
+Model performance was evaluated using 10-fold cross-validation with shuffling enabled. For each fold, the model was trained on 90\% of the data and validated on the remaining 10\%. After cross-validation, each model was retrained on the complete dataset to maximize available training data for deployment.
+
+Performance metrics (R² and MAE) were computed for each fold and averaged to obtain robust performance estimates.
+
+\subsubsection{Model Persistence}
+
+The best-performing models were serialized using joblib for easy deployment. Models can be loaded and used for predictions without retraining.
+

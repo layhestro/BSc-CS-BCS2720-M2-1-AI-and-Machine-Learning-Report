@@ -1,0 +1,20 @@
+\subsection{Data Discussion}
+One of the issues we identified was a dominant frequency of the PPO algorithm usage in the training data (see Figure~\ref{fig:algfreq})
+. Due to this, we had to split the training data into two: PPO and SAC. It could have been possible to create a single model if we had sufficient data for SAC, but that wasn’t the case for us. Future improvement could be investing more time into training and making sure the algorithm frequency is not so skewed.
+
+A similar issue occurred with the frequencies of the environments (see Figure~\ref{fig:envfreqRQ2}). Two issues can be observed: Dominant frequency of the 3DBall environment and insufficient frequency of couple environments, for example, “FoodCollector”. The solution to the problem can be similar to the algorithm frequency problem; make sure the frequency of the environments is not one-sided and is more balanced.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Discussion/img/algfreqRQ2.png}
+    \caption{Algorithm Frequencies}
+    \label{fig:algfreq}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Discussion/img/envfreqRQ2.png}
+    \caption{Environment Frequencies}
+    \label{fig:envfreqRQ2}
+\end{figure}
+
